@@ -52,7 +52,10 @@
             } else {
               url = 'https://github.com/spiedeman/LeetCode-Note/blob/master/docs/' + vm.route.file
             }
-            var editHtml = '[:memo: Edit Document](' + url + ')\n'
+            var editHtml = [
+              '[:memo: Edit Document](' + url + ')\n',
+              '<hr/>'
+            ].join('')
             var footer = [
               '<hr/>',
               '<footer>',
@@ -61,7 +64,6 @@
               '</footer>'
             ].join('')
             return editHtml
-              + '<hr/>'
               + html
               + footer
           })
