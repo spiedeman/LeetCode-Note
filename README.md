@@ -1,8 +1,6 @@
 # LeetCode-Note
 LeetCode刷题记录
 
-[文件链接和路径的定义](link_path.md ':include')
-
 | #   | Title                               | Solution          | Difficulty |
 |-----|-------------------------------------|-------------------|------------|
 | 392 | [判断子序列][392link]               | [Python][392path] | Medium     |
