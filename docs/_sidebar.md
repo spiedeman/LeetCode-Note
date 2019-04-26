@@ -4,3 +4,4 @@
   * [392](Solutions/392.判断子序列.md)
   * [396](Solutions/396.旋转函数.md)
   * [873](Solutions/873.最长的斐波那契数列的长度.md)
+  * [876](Solutions/876.链表的中间结点.md)

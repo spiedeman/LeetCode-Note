@@ -5,7 +5,9 @@ LeetCode刷题记录
 
 | #   | Title                               | Solution          | Difficulty |
 |-----|-------------------------------------|-------------------|------------|
-| 392 | [判断子序列][392link]               | [Python][392path] | Medium     |
-| 396 | [旋转函数][396link]                 | [Python][396path] | Medium     |
-| 873 | [最长的斐波那契数列的长度][873link] | [Python][873path] | Medium     |
+| 392 | [判断子序列][392link]               | [Python][392path] | 中等       |
+| 396 | [旋转函数][396link]                 | [Python][396path] | 中等       |
+| 873 | [最长的斐波那契数列的长度][873link] | [Python][873path] | 中等       |
+| 876 | [链表的中间结点][876link]           | [Python][876path] | 简单       |
+
 
