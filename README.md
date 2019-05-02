@@ -8,6 +8,14 @@ LeetCode刷题记录
 | 873 | [最长的斐波那契数列的长度][873link] | [Python][873path] | 中等       |
 | 876 | [链表的中间结点][876link]           | [Python][876path] | 简单       |
 
+添加了 `html` 转 `markdown` 的功能，并建立了模版文件方便生成完整解答。
+- `html2md.py`
+- `template.md`
+
+添加了爬虫功能，方便获取题目信息。
+- `crawler.py`
+
+
 [392link]: https://leetcode-cn.com/problems/is-subsequence
 [392path]: docs/Solutions/392.判断子序列.md
 [396link]: https://leetcode-cn.com/problems/rotate-function/
