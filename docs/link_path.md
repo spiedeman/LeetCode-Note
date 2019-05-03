@@ -1,9 +1,18 @@
-[392link]: https://leetcode-cn.com/problems/is-subsequence
-[392path]: Solutions/392.判断子序列.md
-[396link]: https://leetcode-cn.com/problems/rotate-function/
-[396path]: Solutions/396.旋转函数.md
-
-[873link]: https://leetcode-cn.com/problems/length-of-longest-fibonacci-subsequence/submissions/
-[873path]: Solutions/873.最长的斐波那契数列的长度.md
-[876link]: https://leetcode-cn.com/problems/middle-of-the-linked-list/
-[876path]: Solutions/876.链表的中间结点.md
+[0001link]: https://leetcode-cn.com/problems/two-sum
+[0001path]: Solutions/0001.两数之和.md
+[0002link]: https://leetcode-cn.com/problems/add-two-numbers
+[0002path]: Solutions/0002.两数相加.md
+[0003link]: https://leetcode-cn.com/problems/longest-substring-without-repeating-characters
+[0003path]: Solutions/0003.无重复字符的最长子串.md
+[0392link]: https://leetcode-cn.com/problems/is-subsequence
+[0392path]: Solutions/0392.判断子序列.md
+[0396link]: https://leetcode-cn.com/problems/rotate-function
+[0396link]: https://leetcode-cn.com/problems/rotate-function/
+[0396path]: Solutions/0396.旋转函数.md
+[0873link]: https://leetcode-cn.com/problems/length-of-longest-fibonacci-subsequence
+[0873link]: https://leetcode-cn.com/problems/length-of-longest-fibonacci-subsequence/submissions/
+[0873path]: Solutions/0873.最长的斐波那契子序列的长度.md
+[0873path]: Solutions/0873.最长的斐波那契数列的长度.md
+[0876link]: https://leetcode-cn.com/problems/middle-of-the-linked-list
+[0876link]: https://leetcode-cn.com/problems/middle-of-the-linked-list/
+[0876path]: Solutions/0876.链表的中间结点.md

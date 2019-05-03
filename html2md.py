@@ -62,8 +62,8 @@ class HTML2MARKDOWN(object):
         普通段落、强调、斜体
         """
         self.rules.append([re.compile(r'<p>(.*?)</p>', flags=re.DOTALL), r'\1'])
-        self.rules.append([re.compile(r'<strong>(.*?)</strong>',
-            flags=re.DOTALL), r'**\1**'])
+        self.rules.append([re.compile(r'<strong>(.*?)</strong>', flags=re.DOTALL), r'**\1**'])
+        self.rules.append([re.compile(r'<em>(.*?)</em>', flags=re.DOTALL), r'*\1*'])
 
     def code_rules(self):
         """
@@ -100,6 +100,8 @@ class HTML2MARKDOWN(object):
         # 单、双引号
         self.rules.append([re.compile(r'&#39;', flags=re.DOTALL), r"'"])
         self.rules.append([re.compile(r'&quot;', flags=re.DOTALL), r'"'])
+        self.rules.append([re.compile(r'&ldquo;', flags=re.DOTALL), r'“'])
+        self.rules.append([re.compile(r'&rdquo;', flags=re.DOTALL), r'”'])
 
     def math_rules(self):
         """
@@ -114,3 +116,4 @@ class HTML2MARKDOWN(object):
         &nbsp; html中的空格
         """
         self.rules.append([re.compile(r'&nbsp;', flags=re.DOTALL), r''])
+        self.rules.append([re.compile(r'<br />', flags=re.DOTALL), r'\n'])

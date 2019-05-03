@@ -104,7 +104,7 @@ class Crawler(object):
             # 顺序很重要
             # frontend_id, problemURL, slug, accept_ratio, status, level
             info = [problem['stat']['frontend_question_id']]
-            info.append('{}/problems/{}'.format(self.baseurl, info[-1]))
+            info.append('{}/problems/{}'.format(self.baseurl, problem['stat']['question__title_slug']))
             info.append(problem['stat']['question__title_slug'])
             info.append(problem['stat']['total_acs']/problem['stat']['total_submitted'])
             info.append(problem['status'])
@@ -177,7 +177,7 @@ class Crawler(object):
             # 仅更新编号为frontend_id的题目描述等详细内容至本地数据库
             url, slug = response[1:3]
             rm_response = self.get_problem_description(url, slug)
-            print(rm_response)
+            #  print(rm_response)
             cursor.execute('insert into {} (frontend_id, title_zh, content_zh, title, content) values(?,?,?,?,?)'.format(self.db_tables[1]), rm_response)
             response.extend(list(rm_response[1:3]))
         
@@ -214,9 +214,9 @@ class Crawler(object):
 #  leetcode = Crawler()
 #  print(leetcode.db_checked, '\tself.db_checked')
 #  print(hasattr(leetcode, 'conn'), '\tself.conn')
-#  #  print(leetcode.query())
+#  print(leetcode.query(3))
 #  print(leetcode.local_problems_description())
 #  #  print(len(leetcode.local_problems_list()))
 #  print(leetcode.db_checked, '\tself.db_checked')
 #  print(hasattr(leetcode, 'conn'), '\tself.conn')
-
+#  
