@@ -39,7 +39,7 @@ i = 1
 
 def add_answer(i):
     problem = leetcode.query(i)
-    filename = '{}.{}.md'.format(problem['frontend_id'], problem['title_zh'])
+    filename = '{:04d}.{}.md'.format(problem['frontend_id'], problem['title_zh'])
     filepath = LOCAL_PATH+'/docs/Solutions'
 
     keys = ['{}link'.format(i), '{}path'.format(i)]
@@ -56,7 +56,7 @@ def add_answer(i):
         #  content = ''.join(f.readlines())
         content = f.readlines()
         content = ''.join(content)
-        add_content = '- [x] [{} {}][{}path]'.format(i, problem['title_zh'], i)
+        add_content = '- [x] [{:04d} {}][{}path]'.format(i, problem['title_zh'], i)
         content = content.strip()+'\n'
         content += add_content
         print(content)
@@ -76,7 +76,7 @@ def add_answer(i):
         content = f.readlines()
         content = ''.join(content)
         content = content.strip()+'\n'
-        add_content = '  * [{}](Solutions/{}.{}.md)'.format(i, i, problem['title_zh'])
+        add_content = '  * [{:04d}](Solutions/{}.{}.md)'.format(i, i, problem['title_zh'])
         content += add_content
         print(content)
 
