@@ -32,7 +32,5 @@ i = 3
 # README.md
 # answer_list.md
 
-add_answer(392)
-add_answer(396)
-add_answer(873)
-add_answer(876)
+add_answer(i)
+add_answer(i-1)

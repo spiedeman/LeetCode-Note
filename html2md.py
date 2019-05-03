@@ -6,15 +6,13 @@ from functools import partial
 LOCAL_PATH=os.path.split(os.path.abspath(sys.argv[0]))[0]
 
 class HTML2MARKDOWN(object):
-    def __init__(self, info=dict(), output='output.md', path='.'):
+    def __init__(self, info=dict(), output='output.md', solution_path='.'):
         self.info = info
-        self.content = ''
-        self.output = output
-        self.path = path
+        self.problem = ''
+        self.output = solution_path+'/'+output
         self.rules = []
 
     def template(self):
-        #  page = '''# [{}-{}]({})\n\n[答案列表](Solutions/answer_list.md)\n## 题目描述\n{}\n\n## 题目分析\n\n## Code\n'''
         with open(LOCAL_PATH+'/template.md', 'r') as f:
             page = ''.join(f.readlines())
 
@@ -42,14 +40,24 @@ class HTML2MARKDOWN(object):
         
         form = (frontend_id, title, url, status, accept_ratio, difficulty, content)
         
-        self.content = self.template().format(*form)
+        self.problem = self.template().format(*form)
 
     def write(self):
         """
         转换后的文本写入到硬盘
         """
-        with open(self.path+'/'+self.output, 'w') as f:
-            f.write(self.content)
+        # 若文件已存在，修改多半因为更新了html转markdown格式的新规则
+        # 因此题目分析和相应代码部分应做保留
+        if os.access(self.output, os.F_OK):
+            with open(self.output, 'r') as f:
+                content = ''.join(f.readlines())
+                rule = re.compile(r'(## 题目分析.*$)', flags=re.DOTALL)
+                reserve = re.search(rule, content).group(1)
+            self.problem = re.sub(rule, reserve, self.problem)
+
+        #  print(self.problem)
+        with open(self.output, 'w') as f:
+            f.write(self.problem)
 
     def rigister(self):
         rules_func = ['self.'+rule+'()' for rule in self.__dir__() if '_rules' in rule]

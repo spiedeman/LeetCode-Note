@@ -22,7 +22,7 @@ def add_answer(frontend_id=1):
     plink = '{:04d}link'.format(frontend_id)
     ppath = '{:04d}path'.format(frontend_id)
     
-    answer = HTML2MARKDOWN(problem, output=filename, path=filepath)
+    answer = HTML2MARKDOWN(problem, output=filename, solution_path=filepath)
 
     # 添加解答文件
     answer.rigister()
