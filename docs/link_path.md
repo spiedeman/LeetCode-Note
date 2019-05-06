@@ -4,6 +4,8 @@
 [0002path]: Solutions/0002.两数相加.md
 [0003link]: https://leetcode-cn.com/problems/longest-substring-without-repeating-characters
 [0003path]: Solutions/0003.无重复字符的最长子串.md
+[0004link]: https://leetcode-cn.com/problems/median-of-two-sorted-arrays
+[0004path]: Solutions/0004.寻找两个有序数组的中位数.md
 [0392link]: https://leetcode-cn.com/problems/is-subsequence
 [0392path]: Solutions/0392.判断子序列.md
 [0396link]: https://leetcode-cn.com/problems/rotate-function
@@ -12,3 +14,7 @@
 [0873path]: Solutions/0873.最长的斐波那契子序列的长度.md
 [0876link]: https://leetcode-cn.com/problems/middle-of-the-linked-list
 [0876path]: Solutions/0876.链表的中间结点.md
+[0929link]: https://leetcode-cn.com/problems/unique-email-addresses
+[0929path]: Solutions/0929.独特的电子邮件地址.md
+[0942link]: https://leetcode-cn.com/problems/di-string-match
+[0942path]: Solutions/0942.增减字符串匹配.md

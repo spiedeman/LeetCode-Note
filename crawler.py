@@ -48,7 +48,7 @@ class Crawler(object):
         cursor = conn.cursor()
         cursor.execute("select * from sqlite_master where type='table'")
         local_tables = set([table[1] for table in cursor.fetchall()])
-        print(local_tables)
+        #  print(local_tables)
         for table, column in zip(self.db_tables, self.db_column):
             if table not in local_tables:
                 cursor.execute('''CREATE TABLE {} {}'''.format(table, column))
@@ -123,15 +123,15 @@ class Crawler(object):
         cursor.close()
         return local_descriptions
 
-    def get_problem_description(self, problemURL, titleslug):
+    def get_problem_description(self, titleslug):
         """
         按照table(problem_detail)中字段的顺序返回一个tuple
         """
         session = requests.Session()
         url = 'https://leetcode-cn.com/graphql'
-        post_data = {"operationName":"getQuestionDetail",
+        post_data = {"operationName":"questionData",
             "variables":{"titleSlug":titleslug},
-            'query': '''query getQuestionDetail($titleSlug: String!) {
+            'query': '''query questionData($titleSlug: String!) {
                 question(titleSlug: $titleSlug) {
                    questionTitle
                    translatedTitle
@@ -140,13 +140,50 @@ class Crawler(object):
                    questionFrontendId
                    similarQuestions
                    categoryTitle
-            }
-        }'''
+                }
+            }'''
         }
+        problemURL = '{}/problems/{}'.format(self.baseurl, titleslug)
         headers = {'User-Agent': self.useragent['Safari'],'Connection':'keep-alive', 'Content-Type':'application/json', 'Referer':problemURL}
 
         response = session.post(url, data=json.dumps(post_data).encode(), headers=headers, timeout=10).json()['data']['question']
         response = (response['questionFrontendId'], response['translatedTitle'], response['translatedContent'], response['questionTitle'], response['content'])
+        return response
+
+    def get_problem_submission(self, titleslug):
+        """
+        必须先登陆，再根据题目 slug 获取提交信息
+        """
+        if not self.is_login:
+            self.login()
+        url = 'https://leetcode-cn.com/graphql'
+        post_data = {"operationName":"Submissions",
+        "variables":{"offset":0,"limit":20,"lastKey":'',"questionSlug":titleslug},
+            "query":'''query Submissions($offset: Int!, $limit: Int!, $lastKey: String, $questionSlug: String!) {
+                submissionList(offset: $offset, limit: $limit, lastKey: $lastKey, questionSlug: $questionSlug) {
+                    lastKey
+                    hasNext
+                    submissions {
+                        id
+                        statusDisplay
+                        lang
+                        runtime
+                        timestamp
+                        url
+                        isPending
+                        memory
+                        __typename
+                    }
+                    __typename
+                }
+            }'''
+        }
+
+        problemURL = '{}/problems/{}'.format(self.baseurl, titleslug)
+        headers = {'User-Agent': self.useragent['Safari'],'Connection':'keep-alive', 'Content-Type':'application/json', 'Referer':problemURL}
+
+        response = self.session.post(url, data=json.dumps(post_data).encode(), headers=headers, timeout=10).json()
+        response = response['data']['submissionList']['submissions']
         return response
 
     @connect_db
@@ -154,6 +191,9 @@ class Crawler(object):
         """
         仅支持通过题目编号(frontend_id)来查询题目信息
         若该题目不在本地数据库，则联网获取信息并更新本地数据库
+        Return
+        ======
+        dict: keys = [frontend_id, url, slug, accept_ratio, status, level, title_zh, content_zh] 
         """
         #  print(hasattr(self, 'conn'), '\tself.conn')
         cursor = self.conn.cursor()
@@ -175,15 +215,23 @@ class Crawler(object):
             response.extend(list(local_result))
         else:
             # 仅更新编号为frontend_id的题目描述等详细内容至本地数据库
-            url, slug = response[1:3]
-            rm_response = self.get_problem_description(url, slug)
+            slug = response[2]
+            rm_response = self.get_problem_description(slug)
             #  print(rm_response)
             cursor.execute('insert into {} (frontend_id, title_zh, content_zh, title, content) values(?,?,?,?,?)'.format(self.db_tables[1]), rm_response)
             response.extend(list(rm_response[1:3]))
         
         keys = ['frontend_id', 'url', 'slug', 'accept_ratio', 'status', 'level', 'title_zh', 'content_zh']
+        result = dict(zip(keys, response))
+        # 若已提交，则获取提交信息
+        if result['status'] == 'ac':
+            try:
+                result['submission'] = self.get_problem_submission(result['slug'])
+            except:
+                result['submission'] = 'fetch submission info failed!'
+
         cursor.close()
-        return dict(zip(keys, response))
+        return result
 
     @connect_db
     def update_db(self):
@@ -202,8 +250,8 @@ class Crawler(object):
         if not update_descriptions:
             update_data = []
             for i in update_descriptions:
-                url, slug = cloud_problems[i][1:3]
-                response = self.get_problem_description(url, slug)
+                slug = cloud_problems[i][2]
+                response = self.get_problem_description(slug)
                 update_data.append(response)
             # 一次性将所有更新数据写入数据库
             cursor.executemany('insert into {} (frontend_id, title_zh, content_zh, title, content) values(?,?,?,?,?)'.format(self.db_tables[1]), update_data)
@@ -214,9 +262,9 @@ class Crawler(object):
 #  leetcode = Crawler()
 #  print(leetcode.db_checked, '\tself.db_checked')
 #  print(hasattr(leetcode, 'conn'), '\tself.conn')
-#  print(leetcode.query(3))
+#  question = leetcode.query(4)
+#  print(question)
 #  print(leetcode.local_problems_description())
 #  #  print(len(leetcode.local_problems_list()))
 #  print(leetcode.db_checked, '\tself.db_checked')
 #  print(hasattr(leetcode, 'conn'), '\tself.conn')
-#  

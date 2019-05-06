@@ -15,7 +15,7 @@ local_problems = leetcode.local_problems_list()
 
 # 通过题目编号查询题目信息
 # 若不在本地，则联网查询并更新本地数据库
-i = 3
+i = 1
 #  problem = leetcode.query(i)
 #  print(problem.keys())
 
@@ -32,5 +32,8 @@ i = 3
 # README.md
 # answer_list.md
 
-add_answer(i)
-add_answer(i-1)
+add_answer(929)
+#  for i in range(4):
+#      add_answer(i+1)
+#  for i in [392, 396, 873, 876]:
+#      add_answer(i)

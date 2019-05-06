@@ -17,7 +17,14 @@ class HTML2MARKDOWN(object):
             page = ''.join(f.readlines())
 
         return page
-
+    
+    def rule_apply(self, match):
+        code = match.group(1)
+        for rule in self.rules:
+            pat, repl = rule
+            code = re.sub(pat, repl, code)
+        return '</pre>{}<pre>'.format(code)
+        
     def convert(self):
         """
         根据注册的规则将 html 文本转换为 markdown 格式
@@ -34,10 +41,13 @@ class HTML2MARKDOWN(object):
         
         if not self.rules:
             self.rigister()
-        for rule in self.rules:
-            pat, repl = rule
-            content = re.sub(pat, repl, content)
-        
+
+        # <pre></pre> 结构内的字符串不作处理
+        content = '</pre>{}<pre>'.format(content)
+        content = re.sub(re.compile(r'</pre>(.*?)<pre>',flags=re.DOTALL), self.rule_apply, content)
+        content = re.match(re.compile(r'</pre>(.*)<pre>',flags=re.DOTALL), content).group(1)
+        content = re.sub(r'(\n{3,})', r'\n\n', content)
+
         form = (frontend_id, title, url, status, accept_ratio, difficulty, content)
         
         self.problem = self.template().format(*form)
@@ -77,8 +87,8 @@ class HTML2MARKDOWN(object):
         """
         行内代码和代码块
         """
-        self.rules.append([re.compile(r'<code>(.*?)</code>', flags=re.DOTALL), r'\1'])
-        self.rules.append([re.compile(r'<pre>(.*?)</pre>', flags=re.DOTALL), r'''\n\1\n'''])
+        self.rules.append([re.compile(r'<code>(.*?)</code>', flags=re.DOTALL), r'`\1`'])
+        #  self.rules.append([re.compile(r'<pre>(.*?)</pre>', flags=re.DOTALL), r'''\n\1\n'''])
 
     def list_rules(self):
         """
