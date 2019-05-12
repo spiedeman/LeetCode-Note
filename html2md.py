@@ -36,7 +36,7 @@ class HTML2MARKDOWN(object):
         status = is_ac[self.info['status']]
         accept_ratio = 100 * self.info['accept_ratio']
         difficulty = level[self.info['level']]
-        title = self.info['title_zh']
+        title = self.info['title_zh'].replace('-', ' ')
         content = self.info['content_zh']
         
         if not self.rules:

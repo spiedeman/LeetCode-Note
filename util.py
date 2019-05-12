@@ -32,7 +32,7 @@ def add_answer(frontend_id=1):
     # 修改 /docs/Solutions/answer_list.md
     with open(filepath+'/answer_list.md', 'r') as f:
         content = [line.strip('\n') for line in f.readlines()]
-        content.append('- [x] [{:04d} {}][{}]'.format(frontend_id, problem['title_zh'], ppath))
+        content.append('- [x] [{:04d} {}][{}]'.format(frontend_id, problem['title_zh'].replace('-', ' '), ppath))
         j = 0
         while not content[j] or content[j][0] != '-':
             j += 1
@@ -60,4 +60,5 @@ def add_answer(frontend_id=1):
     with open(filepath+'/../_sidebar.md', 'w') as f:
         f.write(content)
 
-#  add_answer(1)
+if __name__ == '__main__':
+    print(sys.argv[1])

@@ -147,7 +147,7 @@ class Crawler(object):
         headers = {'User-Agent': self.useragent['Safari'],'Connection':'keep-alive', 'Content-Type':'application/json', 'Referer':problemURL}
 
         response = session.post(url, data=json.dumps(post_data).encode(), headers=headers, timeout=10).json()['data']['question']
-        response = (response['questionFrontendId'], response['translatedTitle'], response['translatedContent'], response['questionTitle'], response['content'])
+        response = (response['questionFrontendId'], response['translatedTitle'].replace(' ', '-'), response['translatedContent'], response['questionTitle'], response['content'])
         return response
 
     def get_problem_submission(self, titleslug):

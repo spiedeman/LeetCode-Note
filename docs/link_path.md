@@ -6,6 +6,10 @@
 [0003path]: Solutions/0003.无重复字符的最长子串.md
 [0004link]: https://leetcode-cn.com/problems/median-of-two-sorted-arrays
 [0004path]: Solutions/0004.寻找两个有序数组的中位数.md
+[0112link]: https://leetcode-cn.com/problems/path-sum
+[0112path]: Solutions/0112.路径总和.md
+[0113link]: https://leetcode-cn.com/problems/path-sum-ii
+[0113path]: Solutions/0113.路径总和-II.md
 [0392link]: https://leetcode-cn.com/problems/is-subsequence
 [0392path]: Solutions/0392.判断子序列.md
 [0396link]: https://leetcode-cn.com/problems/rotate-function
@@ -14,7 +18,13 @@
 [0873path]: Solutions/0873.最长的斐波那契子序列的长度.md
 [0876link]: https://leetcode-cn.com/problems/middle-of-the-linked-list
 [0876path]: Solutions/0876.链表的中间结点.md
+[0894link]: https://leetcode-cn.com/problems/all-possible-full-binary-trees
+[0894path]: Solutions/0894.所有可能的满二叉树.md
 [0929link]: https://leetcode-cn.com/problems/unique-email-addresses
 [0929path]: Solutions/0929.独特的电子邮件地址.md
 [0942link]: https://leetcode-cn.com/problems/di-string-match
 [0942path]: Solutions/0942.增减字符串匹配.md
+[0950link]: https://leetcode-cn.com/problems/reveal-cards-in-increasing-order
+[0950path]: Solutions/0950.按递增顺序显示卡牌.md
+[1008link]: https://leetcode-cn.com/problems/construct-binary-search-tree-from-preorder-traversal
+[1008path]: Solutions/1008.先序遍历构造二叉树.md
