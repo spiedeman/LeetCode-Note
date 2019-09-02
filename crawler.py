@@ -33,6 +33,8 @@ class Crawler(object):
                    'Referer': login_url,
                    'origin': self.baseurl}
         token = self.session.get(login_url).cookies['csrftoken']
+        if token:
+            print('成功获取token')
         post_data = {'csrfmiddlewaretoken': token,
                      'login': self.auth['username'],
                      'password': self.auth['password']}
@@ -89,7 +91,7 @@ class Crawler(object):
         ======
         dict: 包含所有题目
           - key: frontend_id
-          - value: 以table(problem_list)中字段排序的一个tuple
+          - value: 一个tuple，与table(problem_list)中字段排序一致
         """
         if not self.is_login:
             print('not login yet')
@@ -115,7 +117,7 @@ class Crawler(object):
     @connect_db
     def local_problems_description(self):
         """
-        从数据库table(problem_detail)获取所有题目的frontend_id构成的set
+        set: 包含table(problem_detail)中所有题目的frontend_id
         """
         cursor = self.conn.cursor()
         cursor.execute('select frontend_id from {}'.format(self.db_tables[1]))
@@ -123,9 +125,9 @@ class Crawler(object):
         cursor.close()
         return local_descriptions
 
-    def get_problem_description(self, titleslug):
+    def cloud_problems_description(self, titleslug):
         """
-        按照table(problem_detail)中字段的顺序返回一个tuple
+        tuple: 与table(problem_detail)中字段的顺序一致
         """
         session = requests.Session()
         url = 'https://leetcode-cn.com/graphql'
@@ -150,7 +152,7 @@ class Crawler(object):
         response = (response['questionFrontendId'], response['translatedTitle'].replace(' ', '-'), response['translatedContent'], response['questionTitle'], response['content'])
         return response
 
-    def get_problem_submission(self, titleslug):
+    def cloud_problem_submission(self, titleslug):
         """
         必须先登陆，再根据题目 slug 获取提交信息
         """
@@ -201,32 +203,39 @@ class Crawler(object):
         cursor.execute('select * from {} where frontend_id={}'.format(self.db_tables[0], frontend_id))
         local_result = cursor.fetchone()
         if local_result:
+            print('题目基本信息来自于本地数据库')
             response = list(local_result[1:])
         else:
             # 总的题目列表更新至本地数据库
+            print('从官网获取基本信息中...')
             cloud_problems = self.cloud_problems_list()
             cursor.executemany('insert into {} (frontend_id, url, slug, ac_ratio, status, level) values(?,?,?,?,?,?)'.format(self.db_tables[0]), cloud_problems.values())
             response = list(cloud_problems[frontend_id])
+            if response:
+                print('题目基本信息获取成功！')
 
         # 查询 table2——problem_detail
         cursor.execute('select title_zh, content_zh from {} where frontend_id={}'.format(self.db_tables[1], frontend_id))
         local_result = cursor.fetchone()
         if local_result:
+            print('题目详细信息来自于本地数据库')
             response.extend(list(local_result))
         else:
             # 仅更新编号为frontend_id的题目描述等详细内容至本地数据库
+            print('从官网获取题目描述等详细信息中...')
             slug = response[2]
-            rm_response = self.get_problem_description(slug)
+            rm_response = self.cloud_problems_description(slug)
             #  print(rm_response)
             cursor.execute('insert into {} (frontend_id, title_zh, content_zh, title, content) values(?,?,?,?,?)'.format(self.db_tables[1]), rm_response)
             response.extend(list(rm_response[1:3]))
+            print('题目描述等详细信息获取成功！')
         
         keys = ['frontend_id', 'url', 'slug', 'accept_ratio', 'status', 'level', 'title_zh', 'content_zh']
         result = dict(zip(keys, response))
         # 若已提交，则获取提交信息
         if result['status'] == 'ac':
             try:
-                result['submission'] = self.get_problem_submission(result['slug'])
+                result['submission'] = self.cloud_problem_submission(result['slug'])
             except:
                 result['submission'] = 'fetch submission info failed!'
 
@@ -241,30 +250,44 @@ class Crawler(object):
         local_problems = self.local_problems_list()
         cloud_problems = self.cloud_problems_list()
         update_problems = [cloud_problems[i] for i in set(cloud_problems.keys()).difference(local_problems)]
-        if not update_problems:
+        if update_problems:
+            print('将新增题目基本信息更新至数据库中...')
             cursor.executemany('insert into {} (frontend_id, url, slug, ac_ratio, status, level) values(?,?,?,?,?,?)'.format(self.db_tables[0]), update_problems)
+            print('新增题目基本信息更新完毕')
 
         # 有新题目时，更新题目描述，包括中文和英文
         local_descriptions = self.local_problems_description()
-        update_descriptions = set(cloud_problems_list.keys()).difference(local_descriptions)
-        if not update_descriptions:
+        update_descriptions = set(cloud_problems.keys()).difference(local_descriptions)
+        if update_descriptions:
+            print('将新增题目详细信息更新之数据库中...')
             update_data = []
             for i in update_descriptions:
                 slug = cloud_problems[i][2]
-                response = self.get_problem_description(slug)
+                response = self.cloud_problems_description(slug)
                 update_data.append(response)
             # 一次性将所有更新数据写入数据库
             cursor.executemany('insert into {} (frontend_id, title_zh, content_zh, title, content) values(?,?,?,?,?)'.format(self.db_tables[1]), update_data)
+            print('新增题目详细信息更新完毕')
 
         cursor.close()
 
 
-#  leetcode = Crawler()
-#  print(leetcode.db_checked, '\tself.db_checked')
-#  print(hasattr(leetcode, 'conn'), '\tself.conn')
-#  question = leetcode.query(4)
-#  print(question)
-#  print(leetcode.local_problems_description())
-#  #  print(len(leetcode.local_problems_list()))
-#  print(leetcode.db_checked, '\tself.db_checked')
-#  print(hasattr(leetcode, 'conn'), '\tself.conn')
+if __name__ == "__main__":
+    leetcode = Crawler()
+    if len(sys.argv) > 1:
+        problem_id = sys.argv[1]
+    else:
+        problem_id = 306
+    #  print(leetcode.is_login)
+    #  print(leetcode.login())
+    #  print(leetcode.is_login)
+
+    #  print(leetcode.db_checked, '\tself.db_checked')
+    #  print(hasattr(leetcode, 'conn'), '\tself.conn')
+    #  question = leetcode.query(problem_id)
+    #  print(question)
+    #  print(leetcode.local_problems_description())
+    #  print(len(leetcode.local_problems_list()))
+    #  print(leetcode.db_checked, '\tself.db_checked')
+    #  print(hasattr(leetcode, 'conn'), '\tself.conn')
+    #  leetcode.update_db()

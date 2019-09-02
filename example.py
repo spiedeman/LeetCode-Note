@@ -4,7 +4,7 @@ from util import add_answer
 
 # 创建实例
 leetcode = Crawler()
-leetcode.login()
+#  leetcode.login()
 
 # 获取本地和官网题目集合
 local_problems = leetcode.local_problems_list()
@@ -32,7 +32,7 @@ i = 1
 # README.md
 # answer_list.md
 
-add_answer(56)
+add_answer(623)
 #  for i in range(4):
 #      add_answer(i+1)
 #  for i in [392, 396, 873, 876]:
