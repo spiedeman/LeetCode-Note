@@ -1,6 +1,7 @@
 from crawler import Crawler
 from html2md import HTML2MARKDOWN
 from util import add_answer
+import sys
 
 # 创建实例
 leetcode = Crawler()
@@ -32,7 +33,8 @@ i = 1
 # README.md
 # answer_list.md
 
-add_answer(623)
+problem_id = int(sys.argv[1])
+add_answer(problem_id)
 #  for i in range(4):
 #      add_answer(i+1)
 #  for i in [392, 396, 873, 876]:

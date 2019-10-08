@@ -60,5 +60,5 @@ def add_answer(frontend_id=1):
     with open(filepath+'/../_sidebar.md', 'w') as f:
         f.write(content)
 
-if __name__ == '__main__':
-    print(sys.argv[1])
+#  if __name__ == '__main__':
+#      print(sys.argv[1])

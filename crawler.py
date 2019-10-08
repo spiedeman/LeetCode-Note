@@ -94,12 +94,14 @@ class Crawler(object):
           - value: 一个tuple，与table(problem_list)中字段排序一致
         """
         if not self.is_login:
+            # 若未登陆，则无法获得正确的题目状态
             print('not login yet')
             self.login()
         else:
             print('login already')
         url = '{}/api/problems/algorithms/'.format(self.baseurl)
         response = json.loads(self.session.get(url).text)
+        print(response['stat_status_pairs'])
         cloud_problems = dict()
         print('got problems')
         for problem in response.pop('stat_status_pairs'):
@@ -279,9 +281,10 @@ if __name__ == "__main__":
     else:
         problem_id = 306
     #  print(leetcode.is_login)
-    #  print(leetcode.login())
+    print(leetcode.login())
     #  print(leetcode.is_login)
 
+    #  print(leetcode.cloud_problems_list())
     #  print(leetcode.db_checked, '\tself.db_checked')
     #  print(hasattr(leetcode, 'conn'), '\tself.conn')
     #  question = leetcode.query(problem_id)
