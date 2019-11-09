@@ -7,7 +7,13 @@
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/buble.css" title="buble" disabled>
+  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/dark.css" title="dark" disabled>
+  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/pure.css" title="pure" disabled>
+  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/dolphin.css" title="dolphin" disabled>
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"/>
+
+  <script src='http://127.0.0.1:9001/js/socket.js'></script>
 </head>
 <body>
   <div id="app"></div>
@@ -53,6 +59,9 @@
               url = 'https://github.com/spiedeman/LeetCode-Note/blob/master/docs/' + vm.route.file
             }
             var editHtml = '[:memo: Edit Document](' + url + ')\n'
+            <!-- var themeButton = [ -->
+            <!--  -->
+            <!-- ] -->
             var footer = [
               '<hr/>',
               '<footer>',
@@ -69,6 +78,24 @@
     }
   </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <!-- Change Themes  -->
+  <script>
+    window.onload = function() {
+        debugger;
+      var preview = Docsify.dom.find('.theme-preview');
+      var themes = Docsify.dom.findAll('[rel="stylesheet"]');
+  
+      preview.onclick = function (e) {
+        var title = e.target.getAttribute('data-theme')
+                   
+        themes.forEach(function (theme) {
+          theme.disabled = theme.title !== title;
+        });
+      };
+    };
+  </script>
+  <!-- Plugins  -->
+  <script src="//unpkg.com/prismjs/components/prism-bash.js"></script>
   <script src="//unpkg.com/prismjs/components/prism-python.js"></script>
   <script src="//unpkg.com/docsify/lib/plugins/search.js"></script>
   <script src="//unpkg.com/docsify-copy-code"></script>

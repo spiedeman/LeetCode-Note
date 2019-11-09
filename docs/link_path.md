@@ -24,6 +24,8 @@
 [0113path]: Solutions/0113.路径总和-II.md
 [0124link]: https://leetcode-cn.com/problems/binary-tree-maximum-path-sum
 [0124path]: Solutions/0124.二叉树中的最大路径和.md
+[0131link]: https://leetcode-cn.com/problems/palindrome-partitioning
+[0131path]: Solutions/0131.分割回文串.md
 [0179link]: https://leetcode-cn.com/problems/largest-number
 [0179path]: Solutions/0179.最大数.md
 [0230link]: https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst
@@ -66,6 +68,10 @@
 [0565path]: Solutions/0565.数组嵌套.md
 [0623link]: https://leetcode-cn.com/problems/add-one-row-to-tree
 [0623path]: Solutions/0623.在二叉树中增加一行.md
+[0661link]: https://leetcode-cn.com/problems/image-smoother
+[0661path]: Solutions/0661.图片平滑器.md
+[0733link]: https://leetcode-cn.com/problems/flood-fill
+[0733path]: Solutions/0733.图像渲染.md
 [0807link]: https://leetcode-cn.com/problems/max-increase-to-keep-city-skyline
 [0807path]: Solutions/0807.保持城市天际线.md
 [0873link]: https://leetcode-cn.com/problems/length-of-longest-fibonacci-subsequence
